@@ -11,4 +11,7 @@ be established to store the switch inputs, which will be sent to a software regi
 a PWM signal will be generated with a duty cycle according to the value of the switch inputs.
 
 ## Division of labor
-Briefly describe who will be working on what. For extra credit tasks and any software above the driver level, it is okay for both group members to work on a single piece, so long as the division of labor and responsibilities are clear.
+Colter - will be responsible for the Hardware component of proposal 2 and the Software component of proposal 1
+
+Joshua - will be responsible for the Hardware component of proposal 1 and the Software component of proposal 2
+
