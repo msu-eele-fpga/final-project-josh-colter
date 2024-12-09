@@ -167,8 +167,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
  * Stops the patterns from looping in pattern mode and closes the program
  */
 void int_handler(int dummy){
-    loop_patterns = false;
-    devmem_write(0,0);
+   return;
 }
     
 /**
@@ -216,6 +215,7 @@ int main(int argc, char **argv)
 
     devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_PERIOD_OFFSET, RGB_HALF_SECOND_PERIOD);
 
+    signal(SIGINT, int_handler);
     while (true){
         red_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH0_OFFSET);
         green_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH1_OFFSET);
