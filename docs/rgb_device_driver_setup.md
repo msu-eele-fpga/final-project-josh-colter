@@ -85,6 +85,12 @@ within the bootscripts directory run:
 
 ```mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "rgb bootscript" -d rgb.script rgb.scr```
 
+## Step 10 
+
+Tell FPGA (with sudo permissions) to look at boot image (remove old u-boot-scr before creating new one):
+
+```ln -s rgb.scr u-boot.scr```
+
 
 # Setup for the rgb Device Driver
 
