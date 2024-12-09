@@ -2,7 +2,7 @@
 
 ## Step 1
 
-Copy the soc_system.qip file from the quartus project to the /srv/tftp/de10nano directory
+Copy the rgb.rbf file from the quartus project to the /srv/tftp/de10nano directory
 
 ## Step 3
 
