@@ -94,3 +94,32 @@ Tell FPGA (with sudo permissions) to look at boot image (remove old u-boot-scr b
 
 # Setup for the rgb Device Driver
 
+## Step 1
+
+copy over a makefile from previous work, and change the object file to the appropriate name
+
+## Step 2
+
+Create an rgb.c following the zero-to-hero guidlines within a linux/rgb-led directory.
+
+Compile the code with: 
+
+```make```
+
+## Step 3
+
+Do this:
+
+4. Copy the .ko file that gets generated to /srv/nfs/de10nano/ubuntu-rootfs/home/soc .
+5. Boot the FPGA - you should be able to load and remove the module from the home directory using insmod
+<component_name>.ko and rmmod <component.ko> . Check if it was loaded successfully by running dmesg | tail and
+checking to see if the print statement from the probe function shows up.
+6. To check if the character device driver works, load the module, navigate to /sys/devices/platform/ and then cd
+into the directory corrisponding to the component you created. You should be able to read and write to the
+registers using cat <register_name> and echo <value> > <register_name>
+7. To control them via software, see this example file. Cross-compile it with /usr/bin/arm-linux -gnueabihf -gcc -o
+<file_name> <file_name>.c , and copy the executable to /srv/nfs/de10nano/ubuntu-rootfs/home/soc/ .
+
+## Step 4
+
+
