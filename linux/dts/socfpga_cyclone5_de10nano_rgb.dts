@@ -1,0 +1,7 @@
+#include "socfpga_cyclone5_de10nano.dtsi"
+/{
+rgb: rgb@ff27AD40 {
+compatible = "joshcolter,rgb";
+reg = <0xff27AD40 16>;
+};
+};
