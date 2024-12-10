@@ -59,7 +59,7 @@ int devmem_read(uint32_t address){
     //Open the /dev/mem file, which is an image of the main system memory.
     //Using synchronous write operations (O_SYNC) to ensure that the value
     //is fully written to the underlying hardware before the write call returns
-    int fd = open("../../dev/mem", O_RDWR | O_SYNC);
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1)
     {
         fprintf(stderr, "failed to open /dev/mem. \n");
@@ -115,7 +115,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
     //Open the /dev/mem file, which is an image of the main system memory.
     //Using synchronous write operations (O_SYNC) to ensure that the value
     //is fully written to the underlying hardware before the write call returns
-    int fd = open("../../dev/mem", O_RDWR | O_SYNC);
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1)
     {
         fprintf(stderr, "failed to open /dev/mem. \n");
@@ -161,6 +161,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
     return 0;
 }
 
+bool read_ADC = true;
 /**
  * int_handler(int dummy) - handler for ctrl+c interrupt
  * @dummy: information from signal handler. Required by the signal, but not used in this function.
@@ -168,6 +169,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
  * Stops the patterns from looping in pattern mode and closes the program
  */
 void int_handler(int dummy){
+   read_ADC = false;
    return;
 }
     
@@ -217,14 +219,15 @@ int main(int argc, char **argv)
     devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_PERIOD_OFFSET, RGB_HALF_SECOND_PERIOD);
 
     signal(SIGINT, int_handler);
-    while (true){
+    while (read_ADC){
         red_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH0_OFFSET);
         green_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH1_OFFSET);
         blue_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH2_OFFSET);
-
-        red_duty_cycle = (uint32_t)((float)red_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
-        green_duty_cycle = (uint32_t)((float)green_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
-        blue_duty_cycle = (uint32_t)((float)blue_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
+        fprintf(stderr, "ADC: %d \n", red_ADC_value);
+        red_duty_cycle = (uint32_t)(((float)red_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
+        fprintf(stderr,"DUTY CYCLE: %d \n", red_duty_cycle);
+        green_duty_cycle = (uint32_t)(((float)green_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
+        blue_duty_cycle = (uint32_t)(((float)blue_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
 
         devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_RED_DUTY_CYCLE_OFFSET, red_duty_cycle);
         devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_GREEN_DUTY_CYCLE_OFFSET, green_duty_cycle);
