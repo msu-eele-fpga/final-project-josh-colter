@@ -223,9 +223,8 @@ int main(int argc, char **argv)
         red_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH0_OFFSET);
         green_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH1_OFFSET);
         blue_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH2_OFFSET);
-        fprintf(stderr, "ADC: %d \n", red_ADC_value);
+
         red_duty_cycle = (uint32_t)(((float)red_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
-        fprintf(stderr,"DUTY CYCLE: %d \n", red_duty_cycle);
         green_duty_cycle = (uint32_t)(((float)green_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
         blue_duty_cycle = (uint32_t)(((float)blue_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
 
