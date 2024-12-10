@@ -6,6 +6,7 @@ else
 # normal makefile
 
 # path to kernel directory
+
 KDIR ?= ../../../linux-socfpga
 
 default:
