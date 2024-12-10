@@ -301,26 +301,13 @@ architecture de10nano_arch of DE10_Top_Level is
       memory_mem_odt                  : out   std_logic;
       memory_mem_dm                   : out   std_logic_vector(3 downto 0);
       memory_oct_rzqin                : in    std_logic;
-      pwm_comp_output1                : out   std_logic;                                        
-      pwm_comp_output2                : out   std_logic;                                       
-      pwm_comp_output3                : out   std_logic;
-		pwm_comp_button_push            : in    std_logic;
-		reset_reset_n                   : in    std_logic
+		reset_reset_n                   : in    std_logic;
+		rgb_button_comp_new_signal      : in    std_logic
     );
   end component soc_system;
-	
-	signal period_top : unsigned(23 downto 0) := to_unsigned(1000, 24);
-	signal duty_cycle_top : std_logic_vector(17 downto 0) := std_logic_vector(to_unsigned(65536, 18)); 		
-	signal gpio_converted1 : std_logic;
-	signal gpio_converted2 : std_logic;
-	signal gpio_converted3 : std_logic;
 	 
 --
 	begin
-	
-	gpio_0(0) <= std_ulogic(gpio_converted1);
-	gpio_0(1) <= std_ulogic(gpio_converted2);
-	gpio_0(2) <= std_ulogic(gpio_converted3);
 
 		
 --  dut : component rgb_led_avalon
@@ -431,11 +418,8 @@ architecture de10nano_arch of DE10_Top_Level is
 				memory_mem_odt     => hps_ddr3_odt,
 				memory_mem_dm      => hps_ddr3_dm,
 				memory_oct_rzqin   => hps_ddr3_rzq,
-            pwm_comp_output1   => gpio_converted1,                
-            pwm_comp_output2   => gpio_converted2,              
-            pwm_comp_output3   => gpio_converted3,
-				pwm_comp_button_push => not(push_button_n(1)),
-				reset_reset_n => std_ulogic(push_button_n(0))
+				reset_reset_n => std_ulogic(push_button_n(0)),
+				rgb_button_comp_new_signal => (push_button_n(1))
 			);
   
 

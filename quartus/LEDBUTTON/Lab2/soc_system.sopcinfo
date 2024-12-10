@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="soc_system" kind="soc_system" version="1.0" fabric="QSYS">
  <!-- Format version 23.1 993 (Future versions may contain additional information.) -->
- <!-- 2024.12.10.11:35:01 -->
+ <!-- 2024.12.10.15:33:02 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1733855700</value>
+  <value>1733869981</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -15998,9 +15998,9 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>pwm_comp_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>pwm_comp_0.avalon_slave_0</name>
-    <baseAddress>503104</baseAddress>
+    <slaveName>rgb_button_avalon</slaveName>
+    <name>pwm_comp_0.rgb_button_avalon</name>
+    <baseAddress>8192</baseAddress>
     <span>32</span>
    </memoryBlock>
   </interface>
@@ -41828,9 +41828,9 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>pwm_comp_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>pwm_comp_0.avalon_slave_0</name>
-    <baseAddress>503104</baseAddress>
+    <slaveName>rgb_button_avalon</slaveName>
+    <name>pwm_comp_0.rgb_button_avalon</name>
+    <baseAddress>8192</baseAddress>
     <span>32</span>
    </memoryBlock>
   </interface>
@@ -42943,9 +42943,9 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>pwm_comp_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>pwm_comp_0.avalon_slave_0</name>
-    <baseAddress>4280790336</baseAddress>
+    <slaveName>rgb_button_avalon</slaveName>
+    <name>pwm_comp_0.rgb_button_avalon</name>
+    <baseAddress>4280295424</baseAddress>
     <span>32</span>
    </memoryBlock>
    <memoryBlock>
@@ -43762,9 +43762,9 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>pwm_comp_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>pwm_comp_0.avalon_slave_0</name>
-    <baseAddress>4280790336</baseAddress>
+    <slaveName>rgb_button_avalon</slaveName>
+    <name>pwm_comp_0.rgb_button_avalon</name>
+    <baseAddress>4280295424</baseAddress>
     <span>32</span>
    </memoryBlock>
    <memoryBlock>
@@ -71838,9 +71838,9 @@ parameters are a RESULT of the module parameters. -->
    <memoryBlock>
     <isBridge>false</isBridge>
     <moduleName>pwm_comp_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>pwm_comp_0.avalon_slave_0</name>
-    <baseAddress>503104</baseAddress>
+    <slaveName>rgb_button_avalon</slaveName>
+    <name>pwm_comp_0.rgb_button_avalon</name>
+    <baseAddress>8192</baseAddress>
     <span>32</span>
    </memoryBlock>
   </interface>
@@ -71925,7 +71925,7 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <interface name="avalon_slave_0" kind="avalon_slave" version="23.1">
+  <interface name="rgb_button_avalon" kind="avalon_slave" version="23.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -72394,7 +72394,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value></value>
+    <value>rst</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -72419,28 +72419,10 @@ parameters are a RESULT of the module parameters. -->
    <type>conduit</type>
    <isStart>false</isStart>
    <port>
-    <name>output1</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>output1</role>
-   </port>
-   <port>
-    <name>output2</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>output2</role>
-   </port>
-   <port>
-    <name>output3</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>output3</role>
-   </port>
-   <port>
     <name>button_push</name>
     <direction>Input</direction>
     <width>1</width>
-    <role>button_push</role>
+    <role>new_signal</role>
    </port>
   </interface>
  </module>
@@ -80429,11 +80411,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>interrupt_sender</endConnectionPoint>
  </connection>
  <connection
-   name="hps_bridges.h2f_lw/pwm_comp_0.avalon_slave_0"
+   name="hps_bridges.h2f_lw/pwm_comp_0.rgb_button_avalon"
    kind="avalon"
    version="23.1"
    start="hps_bridges.h2f_lw"
-   end="pwm_comp_0.avalon_slave_0">
+   end="pwm_comp_0.rgb_button_avalon">
   <parameter name="arbitrationPriority">
    <type>int</type>
    <value>1</value>
@@ -80444,7 +80426,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x0007ad40</value>
+   <value>0x2000</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -80477,14 +80459,14 @@ parameters are a RESULT of the module parameters. -->
   <startModule>hps_bridges</startModule>
   <startConnectionPoint>h2f_lw</startConnectionPoint>
   <endModule>pwm_comp_0</endModule>
-  <endConnectionPoint>avalon_slave_0</endConnectionPoint>
+  <endConnectionPoint>rgb_button_avalon</endConnectionPoint>
  </connection>
  <connection
-   name="master_0.master/pwm_comp_0.avalon_slave_0"
+   name="master_0.master/pwm_comp_0.rgb_button_avalon"
    kind="avalon"
    version="23.1"
    start="master_0.master"
-   end="pwm_comp_0.avalon_slave_0">
+   end="pwm_comp_0.rgb_button_avalon">
   <parameter name="arbitrationPriority">
    <type>int</type>
    <value>1</value>
@@ -80495,7 +80477,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x0007ad40</value>
+   <value>0x2000</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -80528,7 +80510,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>master_0</startModule>
   <startConnectionPoint>master</startConnectionPoint>
   <endModule>pwm_comp_0</endModule>
-  <endConnectionPoint>avalon_slave_0</endConnectionPoint>
+  <endConnectionPoint>rgb_button_avalon</endConnectionPoint>
  </connection>
  <connection
    name="fpga_clk.clk/pwm_comp_0.clk"
