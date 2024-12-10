@@ -59,7 +59,7 @@ int devmem_read(uint32_t address){
     //Open the /dev/mem file, which is an image of the main system memory.
     //Using synchronous write operations (O_SYNC) to ensure that the value
     //is fully written to the underlying hardware before the write call returns
-    int fd = open("../../dev/mem", O_RDWR | O_SYNC);
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1)
     {
         fprintf(stderr, "failed to open /dev/mem. \n");
@@ -96,7 +96,7 @@ int devmem_read(uint32_t address){
     //We use volatile because the target virtual address could change outside the program.
     //Volatile tells the compiler to not optimize accesses to this address.
     volatile uint32_t *target_virtual_addr = page_virtual_addr + offset_in_page/sizeof(uint32_t*);
-
+    close(fd);
     return(*target_virtual_addr);
 }   
 
@@ -115,7 +115,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
     //Open the /dev/mem file, which is an image of the main system memory.
     //Using synchronous write operations (O_SYNC) to ensure that the value
     //is fully written to the underlying hardware before the write call returns
-    int fd = open("../../dev/mem", O_RDWR | O_SYNC);
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1)
     {
         fprintf(stderr, "failed to open /dev/mem. \n");
@@ -157,9 +157,11 @@ int devmem_write(uint32_t address, uint32_t write_value){
 
     const uint32_t VALUE = (uint32_t)write_value;
     *target_virtual_addr = VALUE;
+    close(fd);
     return 0;
 }
 
+bool read_ADC = true;
 /**
  * int_handler(int dummy) - handler for ctrl+c interrupt
  * @dummy: information from signal handler. Required by the signal, but not used in this function.
@@ -167,6 +169,7 @@ int devmem_write(uint32_t address, uint32_t write_value){
  * Stops the patterns from looping in pattern mode and closes the program
  */
 void int_handler(int dummy){
+   read_ADC = false;
    return;
 }
     
@@ -216,14 +219,15 @@ int main(int argc, char **argv)
     devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_PERIOD_OFFSET, RGB_HALF_SECOND_PERIOD);
 
     signal(SIGINT, int_handler);
-    while (true){
+    
+    while (read_ADC){
         red_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH0_OFFSET);
         green_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH1_OFFSET);
         blue_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH2_OFFSET);
 
-        red_duty_cycle = (red_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
-        green_duty_cycle = (green_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
-        blue_duty_cycle = (blue_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE;
+        red_duty_cycle = (uint32_t)(((float)red_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
+        green_duty_cycle = (uint32_t)(((float)green_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
+        blue_duty_cycle = (uint32_t)(((float)blue_ADC_value / ADC_MAX_VALUE) * RGB_FULL_DUTY_CYCLE);
 
         devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_RED_DUTY_CYCLE_OFFSET, red_duty_cycle);
         devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_GREEN_DUTY_CYCLE_OFFSET, green_duty_cycle);
@@ -233,143 +237,3 @@ int main(int argc, char **argv)
 
 
 }
-
-/*
-    //Command line arguments 
-    int option;
-    bool verbose = false;
-    bool pattern_mode = false;
-    bool file_mode = false;
-    char file_name[100] = "";
-
-    //Start index for led pattern data if -p is used
-    int pattern_start_index = 2;
-
-    if (argc == 1)
-    {
-        //No arguments were given, so just print usage text and exit
-        //NOTE: first argument is just the program name, so argv[1] is 
-        //the first *real* argument
-        usage();
-        return 1;
-    }
-
-    //Get CLI's to set appropriate mode
-    while((option = getopt(argc,argv,"hvp:f:")) != -1)
-    {
-        switch(option)
-        {
-            case 'h':
-                usage();
-                pattern_start_index++;
-                return 0;
-
-            case 'v':
-                verbose = true;
-                pattern_start_index++;
-                break;
-
-            case 'p':
-                pattern_mode = true;
-                break;
-
-            case 'f':
-                file_mode = true;
-                if (optarg != NULL) 
-                {
-                    strcpy(file_name,optarg);
-                } 
-                else 
-                {
-                    printf("Missing File Name\n");
-                    printf("Exiting program...\n");
-                    return 1;
-                }
-
-                break;
-            case '?':
-                printf("Unknown argument %c\n", optopt);
-                usage();
-                printf("Exiting program... \n");
-                return 1;
-        }
-        
-
-        if(file_mode && pattern_mode)
-        {
-            printf("ERROR: both file mode and pattern mode given\n");
-            printf("Exiting program... \n");
-            return 1;
-        }
-    }
-    //Pattern mode functionality
-    if(pattern_mode)
-    {  
-        //Set to hardware control mode
-        devmem_write(0,0x1);
-        //Handle if odd number of pattern arguments
-        if((argc - pattern_start_index) % 2 != 0)
-        {
-            printf("Error: Each pattern was not given a matching time value\n");
-            printf("Exiting program... \n");
-            return 1;
-        } 
-        signal(SIGINT, int_handler);
-        //Read and loop patterns until ctrl+c
-        while(loop_patterns == true)
-        {
-            for(int i = pattern_start_index; i < argc; i++)
-            {
-                uint32_t pattern_to_write = strtoul(argv[i], NULL, 0);
-                if(verbose)
-                {
-                    printf("LED Pattern = ");
-                    print_binary(pattern_to_write);
-                }
-                devmem_write(2, pattern_to_write);
-                i++;
-                int sleep_time_s = strtoul(argv[i], NULL, 0);
-                float sleep_time_ms = (float)sleep_time_s/1000;
-                if(verbose)
-                {
-                    printf(" Time: %d ms\n",sleep_time_s);
-                }
-                sleep(sleep_time_ms);
-            }
-        }
-    } 
-    //File mode functionality
-    else if (file_mode)
-    {
-        //Try to read file
-        FILE* fin = fopen(file_name, "r");
-        if(fin == NULL)
-        {
-            printf("ERROR: file \"%s\" not found\n", file_name);
-            return 0;
-        }
-        //If successful, read patterns in file, write to LEDs
-        else 
-        {
-            devmem_write(0,0x1);
-            char line[256];
-            while(fgets(line,sizeof(line),fin))
-            {
-                uint32_t pattern_to_write = strtoul(strtok(line," "), NULL, 0);
-                if(verbose)
-                {
-                    printf("LED Pattern = ");
-                    print_binary(pattern_to_write);
-                }
-                devmem_write(2, pattern_to_write);
-                uint32_t sleep_time_s = strtoul(strtok(NULL,"\n"), NULL, 0);
-                float sleep_time_ms = (float)sleep_time_s/1000;
-                if(verbose)
-                {
-                    printf(" Time: %d ms\n",sleep_time_s);
-                }
-                sleep(sleep_time_ms);
-            }
-            fclose(fin);
-        }
-    } */
