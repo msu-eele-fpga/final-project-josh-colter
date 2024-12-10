@@ -219,6 +219,7 @@ int main(int argc, char **argv)
     devmem_write(BRIDGE_ADDRESS + RGB_CONTROLLER_BASE_ADDRESS + RGB_PERIOD_OFFSET, RGB_HALF_SECOND_PERIOD);
 
     signal(SIGINT, int_handler);
+    
     while (read_ADC){
         red_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH0_OFFSET);
         green_ADC_value = devmem_read(BRIDGE_ADDRESS + ADC_BASE_ADDRESS + ADC_CH1_OFFSET);
