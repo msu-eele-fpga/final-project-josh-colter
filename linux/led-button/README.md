@@ -37,4 +37,4 @@ Led button sysfs attribute can be found at /dev/led_fade
 
 |sysfs directory| usage|
 |---------------|------|
-|led_button_reg| Stores button input from the de10-nano. 0 for button pressed, nonzero value for button not pressed. Can be written to manually set button input|
+|led_button_reg| Stores button input from the de10-nano. LSB is 0 for button pressed, 1 for button not pressed. Can be written to manually set button input|
