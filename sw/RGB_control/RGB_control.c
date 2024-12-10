@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-bool read_ADC = true;
+bool keep_looping = true;
 /**
  * int_handler(int dummy) - handler for ctrl+c interrupt
  * @dummy: information from signal handler. Required by the signal, but not used in this function.
@@ -16,7 +16,7 @@ bool read_ADC = true;
  */
 void int_handler(int dummy)
 {
-    read_ADC = false;
+    keep_looping = false;
     return;
 }
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     fflush(RGB_controller_file);
 
     signal(SIGINT, int_handler);
-    while (read_ADC)
+    while (keep_looping)
     {
         //Read ADC values
         ret = fread(&red_ADC_value, 4, 1, ADC_file);
