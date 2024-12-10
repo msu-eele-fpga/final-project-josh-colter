@@ -1,6 +1,6 @@
 # Overview
 
-This driver implements a miscdevice driver for the led_button component. This allows access to the button register from software, essentially allowing linux to read the de-10 nano's push button
+This driver implements a miscdevice driver for the led_fade component. This allows access to the button register from software, essentially allowing linux to read the de-10 nano's push button
 
 # Device Tree node
 
@@ -11,7 +11,8 @@ led_fade: led_fade@ff21000 {
 };
 ```
 
->[!NOTE] See README in \/linux\/dts directory for more info on the device tree
+>[!NOTE] 
+>See README in \/linux\/dts directory for more info on the device tree
 
 # Setup for the led_fade Device Driver
 
