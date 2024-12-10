@@ -1,4 +1,4 @@
-# RGB LED Driver Avalon Component
+# RGB LED Avalon Component
 
 ## Overview
 This component creates 3 PWM controllers, and assigns a collective period register and 3 duty_cycle registers to control the R,G,and B values of an RGB LED. It is intended for use with the rgb.ko device driver for software control of the RGB LED.
