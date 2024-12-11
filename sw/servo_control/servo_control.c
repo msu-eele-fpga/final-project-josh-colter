@@ -38,8 +38,8 @@ int main(int argc, char **argv)
 {
     // RGB controller value constants
     const int ADC_MAX_VALUE = 0xfff;
-    const uint32_t SERVO_FULL_DUTY_CYCLE = 0b000010000000000000;
-    const uint32_t SERVO_HALF_SECOND_PERIOD = 0b000000000010100000000000;
+    const uint32_t SERVO_FULL_DUTY_CYCLE = 0b000100000000000000;
+    const uint32_t SERVO_HALF_SECOND_PERIOD = 0b000000000001010000000000;
 
     //Register offsets for RGB controller
     const uint32_t DUTY_CYCLE_OFFSET = 0x0;
@@ -82,14 +82,15 @@ int main(int argc, char **argv)
         ret = fseek(ADC_file, ADC_CH4_OFFSET, SEEK_SET);
 
         ret = fread(&ADC_value, 4, 1, ADC_file);
-
+        
         //Convert ADC to duty cycle value
         duty_cycle = (uint32_t)(((float)ADC_value / ADC_MAX_VALUE) * SERVO_FULL_DUTY_CYCLE);
-
+        
         //Write duty cycle to servo controller
         ret = fseek(SERVO_controller_file, DUTY_CYCLE_OFFSET, SEEK_SET);
         ret = fwrite(&duty_cycle, 4, 1, SERVO_controller_file);
         fflush(SERVO_controller_file);
+        usleep(500);
     }
 
     fclose(ADC_file);

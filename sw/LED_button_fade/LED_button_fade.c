@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     const uint32_t RGB_HALF_SECOND_PERIOD = 0b000000100000000000000000;
 
     //LED fade value constants
-    const int LED_FADE_WAIT_CYCLES = 1;
+    const int LED_FADE_DELAY_US = 100;
 
     //Register offsets for RGB controller
     const uint32_t RGB_RED_OFFSET = 0x0;
@@ -64,9 +64,10 @@ int main(int argc, char **argv)
     uint32_t red_ADC_value = 0;
     uint32_t green_ADC_value = 0;
     uint32_t blue_ADC_value = 0;
-    uint32_t red_duty_cycle = 0;
-    uint32_t green_duty_cycle = 0;
-    uint32_t blue_duty_cycle = 0;
+    uint32_t red_duty_cycle = 0xFFFF;
+    uint32_t green_duty_cycle = 0xFFFF;
+    uint32_t blue_duty_cycle = 0xFFFF;
+    int counter = 0;
 
     size_t ret;
     uint32_t val;
@@ -104,8 +105,9 @@ int main(int argc, char **argv)
     while (keep_looping)
     {
         //Read LED fade button
-        ret = fread(&LED_button_reg_value, 4, 1, LED_fade_file);
         ret = fseek(LED_fade_file, 0, SEEK_SET);
+        ret = fread(&LED_button_reg_value, 4, 1, LED_fade_file);
+        
 
         if(LED_button_reg_value > 0)
         {
@@ -133,7 +135,12 @@ int main(int argc, char **argv)
             ret = fseek(RGB_controller_file, RGB_BLUE_OFFSET, SEEK_SET);
             ret = fwrite(&blue_duty_cycle, 4, 1, RGB_controller_file);
             fflush(RGB_controller_file);
-        } else {
+
+        } 
+        else 
+        {
+ 
+            usleep(LED_FADE_DELAY_US);
             //Fade to black
             if(red_duty_cycle > 0)
             {
@@ -147,7 +154,7 @@ int main(int argc, char **argv)
             {
                 blue_duty_cycle--;
             }
-            
+     
             ret = fseek(RGB_controller_file, RGB_RED_OFFSET, SEEK_SET);
             ret = fwrite(&red_duty_cycle, 4, 1, RGB_controller_file);
             fflush(RGB_controller_file);
@@ -159,7 +166,6 @@ int main(int argc, char **argv)
             ret = fseek(RGB_controller_file, RGB_BLUE_OFFSET, SEEK_SET);
             ret = fwrite(&blue_duty_cycle, 4, 1, RGB_controller_file);
             fflush(RGB_controller_file);
-
         }
         
     }
