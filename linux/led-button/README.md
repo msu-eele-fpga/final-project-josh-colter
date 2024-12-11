@@ -24,16 +24,16 @@ Navigate to the led-button directory, compile the code with:
 
 ## Step 2: Copy the device driver to the linux SoC
 
-Copy the .ko file that gets generated to /srv/nfs/de10nano/ubuntu-rootfs/home/soc .
+Copy the .ko file that gets generated to /srv/nfs/de10nano/ubuntu-rootfs/home/soc
 
 ## Step 3: Insert device driver Kernel Module
 
-In the SOC's command window, load the device driver using
+In the SOC's command line, load the device driver using
 ```sudo insmod led_fade.ko``` 
 Check if it was loaded successfully by running dmesg | tail and checking for an inserted successfully message
 
 # Usage
-Led button sysfs attribute can be found at /dev/led_fade
+Led button sysfs attributes can be found at /dev/led_fade
 
 |sysfs directory| usage|
 |---------------|------|

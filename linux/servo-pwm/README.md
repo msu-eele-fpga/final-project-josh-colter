@@ -1,23 +1,24 @@
+
 # Overview
 
-This driver implements a miscdevice driver for the rgb component. This allows software control of the RGB LED controller through sysfs directories.
+This driver implements a miscdevice driver for the servo component. This allows software control of the Servo PWM controller through sysfs directories.
 
 # Device Tree node
 
 ```c
-rgb: rgb@ff27AD40 {
-    compatible = "joshcolter,rgb";
-    reg = <0xff27AD40 16>;
+servo: servo@ff201000 {
+    compatible = "adsd,servo";
+    reg = <0xff201000 32>;
 };
 ```
 
 See README in \/linux\/dts directory for more info on the device tree
 
-# Setup for the rgb Device Driver
+# Setup for the servo Device Driver
 
 ## Step 1 : Compile the device driver
 
-Navigate to the rgb-led directory, compile the code with: 
+Navigate to the servo directory, compile the code with: 
 
 ```make```
 
@@ -28,15 +29,14 @@ Copy the .ko file that gets generated to /srv/nfs/de10nano/ubuntu-rootfs/home/so
 ## Step 3: Insert device driver Kernel Module
 
 In the SOC's command line, load the device driver using
-```sudo insmod rgb.ko``` 
+```sudo insmod servo.ko``` 
 Check if it was loaded successfully by running dmesg | tail and checking for an inserted successfully message
 
 # Usage
-RGB_LED sysfs attribute can be found at /dev/rgb
+servo sysfs attributes can be found at /dev/rgb
 
 |sysfs directory| usage|
 |---------------|------|
-|duty_cycle_r| Red PWM duty cycle|
-|duty_cycle_g| Green PWM duty cycle|
-|duty_cycle_b| Blue PWM duty cycle|
-|period_reg| period for R, G, and B PWM signals|
+|duty_cycle| Servo duty cycle. Most standard servos should not exceed 10%|
+|period_reg| Servo period. Most standard servos use 20 ms|
+
