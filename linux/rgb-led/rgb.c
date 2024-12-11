@@ -8,9 +8,9 @@
 #include <linux/fs.h> // copy_to_user, etc.
 #include <linux/kstrtox.h> // kstrtou8, etc.
 
-#define duty_cycle_1_OFFSET 0x0
-#define duty_cycle_2_OFFSET 0x04
-#define duty_cycle_3_OFFSET 0x08
+#define duty_cycle_red_OFFSET 0x0
+#define duty_cycle_green_OFFSET 0x04
+#define duty_cycle_blue_OFFSET 0x08
 #define period_reg_OFFSET 0x10
 
 #define SPAN 16
@@ -27,9 +27,9 @@
 */
 struct rgb_dev {
     void __iomem *base_addr;
-    void __iomem *duty_cycle_1;
-    void __iomem *duty_cycle_2;
-    void __iomem *duty_cycle_3;
+    void __iomem *duty_cycle_red; //red
+    void __iomem *duty_cycle_green; //green
+    void __iomem *duty_cycle_blue; //blue
     void __iomem *period_reg;
     struct miscdevice miscdev;
     struct mutex lock;
@@ -38,7 +38,7 @@ struct rgb_dev {
 
 
 /**
-* duty_cycle_1_show() - Return the duty_cycle_1 value
+* duty_cycle_red_show() - Return the duty_cycle_red value
 * to user-space via sysfs.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb' device struct.
@@ -47,16 +47,16 @@ struct rgb_dev {
 *
 * Return: The number of bytes read.
 */
-static ssize_t duty_cycle_1_show(struct device *dev,
+static ssize_t duty_cycle_red_show(struct device *dev,
 struct device_attribute *attr, char *buf)
 {
-    u32 duty_cycle_1;
+    u32 duty_cycle_red;
     struct rgb_dev *priv = dev_get_drvdata(dev);
-    duty_cycle_1 = ioread32(priv->duty_cycle_1);
-    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_1);
+    duty_cycle_red = ioread32(priv->duty_cycle_red);
+    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_red);
 }
 /**
-* duty_cycle_1_store() - Store the duty_cycle_1 value.
+* duty_cycle_red_store() - Store the duty_cycle_red value.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb
 * platform device struct.
@@ -66,20 +66,20 @@ struct device_attribute *attr, char *buf)
 *
 * Return: The number of bytes stored.
 */
-static ssize_t duty_cycle_1_store(struct device *dev,
+static ssize_t duty_cycle_red_store(struct device *dev,
 struct device_attribute *attr, const char *buf, size_t size)
 {
-    u32 duty_cycle_1;
+    u32 duty_cycle_red;
     int ret;
     struct rgb_dev *priv = dev_get_drvdata(dev);
     // Parse the string we received as an unsigned 32-bit int
     // See https://elixir.bootlin.com/linux/latest/source/lib/kstrtox.c#L289
-    ret = kstrtouint(buf, 0, &duty_cycle_1);
+    ret = kstrtouint(buf, 0, &duty_cycle_red);
     if (ret < 0) 
     {
         return ret;
     }
-    iowrite32(duty_cycle_1, priv->duty_cycle_1);
+    iowrite32(duty_cycle_red, priv->duty_cycle_red);
     // Write was successful, so we return the number of bytes we wrote.
     return size;
 }
@@ -88,7 +88,7 @@ struct device_attribute *attr, const char *buf, size_t size)
 
 
 /**
-* duty_cycle_2_show() - Return the duty_cycle_2 value
+* duty_cycle_green_show() - Return the duty_cycle_green value
 * to user-space via sysfs.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb' device struct.
@@ -97,16 +97,16 @@ struct device_attribute *attr, const char *buf, size_t size)
 *
 * Return: The number of bytes read.
 */
-static ssize_t duty_cycle_2_show(struct device *dev,
+static ssize_t duty_cycle_green_show(struct device *dev,
 struct device_attribute *attr, char *buf)
 {
-    u32 duty_cycle_2;
+    u32 duty_cycle_green;
     struct rgb_dev *priv = dev_get_drvdata(dev);
-    duty_cycle_2 = ioread32(priv->duty_cycle_2);
-    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_2);
+    duty_cycle_green = ioread32(priv->duty_cycle_green);
+    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_green);
 }
 /**
-* duty_cycle_2_store() - Store the duty_cycle_2 value.
+* duty_cycle_green_store() - Store the duty_cycle_green value.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb
 * platform device struct.
@@ -116,20 +116,20 @@ struct device_attribute *attr, char *buf)
 *
 * Return: The number of bytes stored.
 */
-static ssize_t duty_cycle_2_store(struct device *dev,
+static ssize_t duty_cycle_green_store(struct device *dev,
 struct device_attribute *attr, const char *buf, size_t size)
 {
-    u32 duty_cycle_2;
+    u32 duty_cycle_green;
     int ret;
     struct rgb_dev *priv = dev_get_drvdata(dev);
     // Parse the string we received as an unsigned 32-bit int
     // See https://elixir.bootlin.com/linux/latest/source/lib/kstrtox.c#L289
-    ret = kstrtouint(buf, 0, &duty_cycle_2);
+    ret = kstrtouint(buf, 0, &duty_cycle_green);
     if (ret < 0) 
     {
         return ret;
     }
-    iowrite32(duty_cycle_2, priv->duty_cycle_2);
+    iowrite32(duty_cycle_green, priv->duty_cycle_green);
     // Write was successful, so we return the number of bytes we wrote.
     return size;
 }
@@ -137,7 +137,7 @@ struct device_attribute *attr, const char *buf, size_t size)
 
 
 /**
-* duty_cycle_3_show() - Return the duty_cycle_3 value
+* duty_cycle_blue_show() - Return the duty_cycle_blue value
 * to user-space via sysfs.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb' device struct.
@@ -146,16 +146,16 @@ struct device_attribute *attr, const char *buf, size_t size)
 *
 * Return: The number of bytes read.
 */
-static ssize_t duty_cycle_3_show(struct device *dev,
+static ssize_t duty_cycle_blue_show(struct device *dev,
 struct device_attribute *attr, char *buf)
 {
-    u32 duty_cycle_3;
+    u32 duty_cycle_blue;
     struct rgb_dev *priv = dev_get_drvdata(dev);
-    duty_cycle_3 = ioread32(priv->duty_cycle_3);
-    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_3);
+    duty_cycle_blue = ioread32(priv->duty_cycle_blue);
+    return scnprintf(buf, PAGE_SIZE, "%u\n", duty_cycle_blue);
 }
 /**
-* duty_cycle_3_store() - Store the duty_cycle_3 value.
+* duty_cycle_blue_store() - Store the duty_cycle_blue value.
 * @dev: Device structure for the rgb component. This
 * device struct is embedded in the rgb
 * platform device struct.
@@ -165,19 +165,19 @@ struct device_attribute *attr, char *buf)
 *
 * Return: The number of bytes stored.
 */
-static ssize_t duty_cycle_3_store(struct device *dev,
+static ssize_t duty_cycle_blue_store(struct device *dev,
 struct device_attribute *attr, const char *buf, size_t size)
 {
-    u32 duty_cycle_3;
+    u32 duty_cycle_blue;
     int ret;
     struct rgb_dev *priv = dev_get_drvdata(dev);
     // Parse the string we received as an unsigned 32-bit int
     // See https://elixir.bootlin.com/linux/latest/source/lib/kstrtox.c#L289
-    ret = kstrtouint(buf, 0, &duty_cycle_3);
+    ret = kstrtouint(buf, 0, &duty_cycle_blue);
     if (ret < 0) {
     return ret;
     }
-    iowrite32(duty_cycle_3, priv->duty_cycle_3);
+    iowrite32(duty_cycle_blue, priv->duty_cycle_blue);
     // Write was successful, so we return the number of bytes we wrote.
     return size;
 }
@@ -230,17 +230,17 @@ struct device_attribute *attr, const char *buf, size_t size)
 }
 
 // Define sysfs attributes
-static DEVICE_ATTR_RW(duty_cycle_1);
-static DEVICE_ATTR_RW(duty_cycle_2);
-static DEVICE_ATTR_RW(duty_cycle_3);
+static DEVICE_ATTR_RW(duty_cycle_red);
+static DEVICE_ATTR_RW(duty_cycle_green);
+static DEVICE_ATTR_RW(duty_cycle_blue);
 static DEVICE_ATTR_RW(period_reg);
 
 // Create an attribute group so the device core can
 // export the attributes for us.
 static struct attribute *rgb_attrs[] = {
-    &dev_attr_duty_cycle_1.attr,
-    &dev_attr_duty_cycle_2.attr,
-    &dev_attr_duty_cycle_3.attr,
+    &dev_attr_duty_cycle_red.attr,
+    &dev_attr_duty_cycle_green.attr,
+    &dev_attr_duty_cycle_blue.attr,
     &dev_attr_period_reg.attr,
     NULL,
 };
@@ -406,9 +406,9 @@ static int rgb_probe(struct platform_device *pdev)
         return PTR_ERR(priv->base_addr);
     }
     // Set the memory addresses for each register.
-    priv->duty_cycle_1 = priv->base_addr + duty_cycle_1_OFFSET;
-    priv->duty_cycle_2 = priv->base_addr + duty_cycle_2_OFFSET;
-    priv->duty_cycle_3 = priv->base_addr + duty_cycle_3_OFFSET;
+    priv->duty_cycle_red = priv->base_addr + duty_cycle_red_OFFSET;
+    priv->duty_cycle_green = priv->base_addr + duty_cycle_green_OFFSET;
+    priv->duty_cycle_blue = priv->base_addr + duty_cycle_blue_OFFSET;
     priv->period_reg = priv->base_addr + period_reg_OFFSET;
     // Do any initializations when module is loaded
     //iowrite32(<value>, priv-><reg_name>);
