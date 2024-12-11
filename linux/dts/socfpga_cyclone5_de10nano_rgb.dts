@@ -10,4 +10,9 @@ de10nano_adc: adc@ff200000 {
     compatible = "adsd,de10nano_adc";
     reg = <0xff200000 32>;
 };
+
+servo: servo@ff201000 {
+    compatible = "adsd,servo";
+    reg = <0xff202000 32>;
+};
 };
