@@ -1,8 +1,8 @@
 #include "socfpga_cyclone5_de10nano.dtsi"
 /{
 rgb: rgb@ff27AD40 {
-compatible = "joshcolter,rgb";
-reg = <0xff27AD40 16>;
+    compatible = "joshcolter,rgb";
+    reg = <0xff27AD40 16>;
 };
 
 
@@ -11,7 +11,12 @@ de10nano_adc: adc@ff200000 {
     reg = <0xff200000 32>;
 };
 
-servo: servo@ff201000 {
+led_fade: adc@ff201000 {
+    compatible = "joshcolter,led_fade";
+    reg = <0xff201000 4>;
+};
+
+servo: servo@ff202000 {
     compatible = "adsd,servo";
     reg = <0xff202000 32>;
 };
