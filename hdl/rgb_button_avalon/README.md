@@ -1,12 +1,9 @@
 # RGB LED Avalon Component
 
 ## Overview
-This component creates 3 PWM controllers, and assigns a collective period register and 3 duty_cycle registers to control the R,G,and B values of an RGB LED. It is intended for use with the rgb.ko device driver for software control of the RGB LED.
+This component maps the value of bit button_press to a register. Button_press is intended to be connected to push button 1 in the top level file, in order to use the de10-nano's push button in software.
 
 ## Memory Map
 |Register|Address|
 |--------|-------|
-| duty_cycle1| 00|
-| duty_cycle2| 01|
-| duty_cycle3| 10|
-| PWM period | 11|
+| button press register| 00|
