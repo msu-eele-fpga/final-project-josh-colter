@@ -360,7 +360,7 @@ begin
       memory_oct_rzqin   => hps_ddr3_rzq,
 
 		--RGB LED
-		reset_reset_n => std_ulogic(push_button_n(0)),
+		reset_reset_n => std_ulogic(push_button_n(1)),
       rgb_led_output1   => gpio_converted1,                
       rgb_led_output2   => gpio_converted2,              
       rgb_led_output3   => gpio_converted3,
@@ -375,7 +375,7 @@ begin
 		servo_controller_servo_pwm => gpio_converted4,
 		
 		--LED fade button
-		rgb_button_button_push => not(push_button_n(0)),
+		rgb_button_button_push => not(push_button_n(1)),
 
       -- Fabric clock and reset
       clk_clk       => fpga_clk1_50
