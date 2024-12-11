@@ -46,8 +46,6 @@ begin
         output       => servo_PWM                       
 		);
 
-	
-
   read : process (clk)
   begin
 
