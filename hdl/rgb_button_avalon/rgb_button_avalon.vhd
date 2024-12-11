@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity rgb_led_avalon is
+entity rgb_button_avalon is
 	port (
 		clk : in std_ulogic;
 		rst : in std_ulogic;
@@ -15,15 +15,12 @@ entity rgb_led_avalon is
 		avs_writedata : in std_logic_vector(31 downto 0);
 
 		-- external I/O; export to top-level
-		button_push : in std_ulogic;
-		output1 : out std_logic;
-		output2 : out std_logic;
-		output3 : out std_logic
+		button_push : in std_ulogic
 	);
-end entity rgb_led_avalon;
+end entity rgb_button_avalon;
 
 
-architecture rgb_led_avalon_arch of rgb_led_avalon is
+architecture rgb_button_avalon_arch of rgb_button_avalon is
 	
 	--Signal to hold the output of the button press
 	signal button_press_output : std_logic;

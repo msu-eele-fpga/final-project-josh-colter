@@ -54,6 +54,22 @@
          type = "int";
       }
    }
+   element rgb_button_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
+   element rgb_button_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "8192";
+         type = "String";
+      }
+   }
    element rgb_led_0
    {
       datum _sortIndex
@@ -358,6 +374,14 @@
          type = "String";
       }
    }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
@@ -372,7 +396,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="servo_control.qpf" />
+ <parameter name="projectName">full_integration.qpf</parameter>
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -389,6 +413,11 @@
  <interface name="hps_spim0_sclk_out" internal="hps.spim0_sclk_out" />
  <interface name="memory" internal="hps.memory" type="conduit" dir="end" />
  <interface name="reset" internal="fpga_clk.clk_in_reset" type="reset" dir="end" />
+ <interface
+   name="rgb_button"
+   internal="rgb_button_0.rgb_button"
+   type="conduit"
+   dir="end" />
  <interface name="rgb_led" internal="rgb_led_0.rgb_led" type="conduit" dir="end" />
  <interface
    name="servo_controller"
@@ -1156,6 +1185,7 @@
   <parameter name="PLI_PORT" value="50000" />
   <parameter name="USE_PLI" value="0" />
  </module>
+ <module name="rgb_button_0" kind="rgb_button" version="1.0" enabled="1" />
  <module name="rgb_led_0" kind="rgb_led" version="1.0" enabled="1" />
  <module
    name="servo_controller_0"
@@ -1192,6 +1222,15 @@
  <connection
    kind="avalon"
    version="23.1"
+   start="hps.h2f_lw_axi_master"
+   end="rgb_button_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x2000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
    start="jtag_master.master"
    end="adc.adc_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1217,6 +1256,15 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
+   kind="avalon"
+   version="23.1"
+   start="jtag_master.master"
+   end="rgb_button_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x2000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
    kind="clock"
    version="23.1"
    start="fpga_clk.clk"
@@ -1227,6 +1275,11 @@
    start="fpga_clk.clk"
    end="servo_controller_0.clk" />
  <connection kind="clock" version="23.1" start="fpga_clk.clk" end="rgb_led_0.clk" />
+ <connection
+   kind="clock"
+   version="23.1"
+   start="fpga_clk.clk"
+   end="rgb_button_0.clk" />
  <connection
    kind="clock"
    version="23.1"
@@ -1259,6 +1312,11 @@
    version="23.1"
    start="fpga_clk.clk_reset"
    end="rgb_led_0.rst" />
+ <connection
+   kind="reset"
+   version="23.1"
+   start="fpga_clk.clk_reset"
+   end="rgb_button_0.rst" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
 </system>
