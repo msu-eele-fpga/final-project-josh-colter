@@ -7,7 +7,7 @@ else
 
 # path to kernel directory
 
-KDIR ?= ../../../linux-socfpga
+KDIR ?= ../../../../Desktop/linux-socfpga
 
 default:
 	$(MAKE) -C $(KDIR) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- M=$$PWD
