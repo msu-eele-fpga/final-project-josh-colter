@@ -11,13 +11,13 @@ de10nano_adc: adc@ff200000 {
     reg = <0xff200000 32>;
 };
 
-led_fade: led_fade@ff201000 {
+led_fade: led_fade@ff202000 {
     compatible = "joshcolter,led_fade";
-    reg = <0xff201000 16>;
+    reg = <0xff202000 16>;
 };
 
-servo: servo@ff202000 {
+servo: servo@ff201000 {
     compatible = "adsd,servo";
-    reg = <0xff202000 16>;
+    reg = <0xff201000 32>;
 };
 };

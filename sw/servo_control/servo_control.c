@@ -82,10 +82,10 @@ int main(int argc, char **argv)
         ret = fseek(ADC_file, ADC_CH4_OFFSET, SEEK_SET);
 
         ret = fread(&ADC_value, 4, 1, ADC_file);
-        printf("ADC VALUE: %d\n", ADC_value);
+        
         //Convert ADC to duty cycle value
         duty_cycle = (uint32_t)(((float)ADC_value / ADC_MAX_VALUE) * SERVO_FULL_DUTY_CYCLE);
-        printf("DUTY CYCLE: %d\n", duty_cycle);
+        
         //Write duty cycle to servo controller
         ret = fseek(SERVO_controller_file, DUTY_CYCLE_OFFSET, SEEK_SET);
         ret = fwrite(&duty_cycle, 4, 1, SERVO_controller_file);
