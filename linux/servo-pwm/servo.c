@@ -12,7 +12,7 @@
 #define duty_cycle_OFFSET 0x0
 #define period_reg_OFFSET 0x04
 
-#define SPAN 32
+#define SPAN 16
 
 
 /**

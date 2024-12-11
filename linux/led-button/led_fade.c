@@ -10,7 +10,7 @@
 
 #define LED_BUTTON_REG_OFFSET 0x0
 
-#define SPAN 4
+#define SPAN 16
 
 
 /**
