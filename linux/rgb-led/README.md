@@ -17,7 +17,7 @@ See README in \/linux\/dts directory for more info on the device tree
 
 ## Step 1 : Compile the device driver
 
-Navigate to the rgb-led directory, compile the code with: 
+Navigate to the rgb-led directory, and update the file path KDIR= to point to your linux-socfpga directory. 
 
 ```make```
 

@@ -18,7 +18,7 @@ See README in \/linux\/dts directory for more info on the device tree
 
 ## Step 1 : Compile the device driver
 
-Navigate to the servo directory, compile the code with: 
+Navigate to the servo directory, and update the file path KDIR= to point to your linux-socfpga directory. 
 
 ```make```
 

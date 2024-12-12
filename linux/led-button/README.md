@@ -18,7 +18,7 @@ led_fade: led_fade@ff21000 {
 
 ## Step 1 : Compile the device driver
 
-Navigate to the led-button directory, compile the code with: 
+Navigate to the led-button directory, and update the file path KDIR= to point to your linux-socfpga directory. Compile the code with: 
 
 ```make```
 
