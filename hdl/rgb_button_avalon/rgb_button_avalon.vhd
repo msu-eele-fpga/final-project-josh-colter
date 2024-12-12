@@ -25,9 +25,7 @@ architecture rgb_button_avalon_arch of rgb_button_avalon is
 	--Signal to hold the output of the button press
 	signal button_press_output : std_logic;
 
-  -- The address width is 3 bits wide, so we can have up to 2^3 registers
-  -- in our design. For real designs, *please* use better names than reg0, etc.
-  -- *Always* give your registers a good default power-up value.
+  --Default value: button pressed
   signal button_press_register: std_logic := '0';
 
 begin

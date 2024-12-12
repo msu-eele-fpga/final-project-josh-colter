@@ -33,5 +33,5 @@ cp led-patterns /srv/nfs/de10nano/ubuntu-rootfs/home/soc
 
 ## Hardware Configuration
 
-This system relies on the FPGA being programmed with the rgb_led.rbf file. For this example, the provided Quartus project was used to convert programming files.
+This system relies on the FPGA being programmed with the rgb_final.rbf file. For this example, the provided Quartus project was used to convert programming files.
 
