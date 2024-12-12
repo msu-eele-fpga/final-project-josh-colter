@@ -1,1 +1,1 @@
-Folder for Linux related files.
+Linux device drivers and device tree. See subdirectories for compilation instructions for drivers and tree.
