@@ -320,7 +320,7 @@ architecture de10nano_arch of DE10_Top_Level is
 	gpio_0(0) <= std_ulogic(gpio_converted1);
 	gpio_0(1) <= std_ulogic(gpio_converted2);
 	gpio_0(2) <= std_ulogic(gpio_converted3);
-
+	
 		
 --  dut : component rgb_led_avalon
 --	port map(

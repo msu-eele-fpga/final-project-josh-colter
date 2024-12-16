@@ -20,11 +20,9 @@ architecture Behavioral of pwm_controller is
     
     signal duty_cycle_int  : unsigned(18 - 1 downto 0);  
     signal on_time         : unsigned(24 - 1 downto 0);      
-   -- signal counter         : unsigned(24 - 1 downto 0) := (to_unsigned(0, 24));      
     signal counter         : integer := 0;
-	 --signal on_time_scaled : unsigned(23 downto 0);
 
-	 constant N_BITS_SYS_CLK_FREQ : natural := natural(ceil(log2(real(1 ms / CLK_PERIOD))));
+	constant N_BITS_SYS_CLK_FREQ : natural := natural(ceil(log2(real(1 ms / CLK_PERIOD))));
 		
 	constant SYS_CLK_FREQ : unsigned(N_BITS_SYS_CLK_FREQ - 1 downto 0) := to_unsigned((1 ms /CLK_PERIOD), N_BITS_SYS_CLK_FREQ);
 
@@ -34,7 +32,6 @@ architecture Behavioral of pwm_controller is
 
 	signal period_base_clk_full_prec : unsigned(N_BITS_CLK_CYCLES_FULL - 1 downto 0);
 
-	--signal period_base_clk : unsigned(N_BITS_CLK_CYCLES - 1 downto 0);
 	signal period_base_clk : unsigned(20 downto 0);
 	
 begin
@@ -45,9 +42,8 @@ begin
 
     process(clk, rst)
     begin
-        if rst = '1' then
-           -- counter <= (others => '0');
-	    counter <= 0;
+        if rst = '1' then;
+	        counter <= 0;
             on_time <= (others => '0');
             duty_cycle_int <= (others => '0');
             output <= '0';
@@ -60,8 +56,8 @@ begin
 
             
             if to_unsigned(counter, 25) = period_base_clk then
-               -- counter <= (others => '0');  
-		  counter <= 0;  
+  
+		        counter <= 0;  
             else
                 counter <= counter + 1;  
             end if;
